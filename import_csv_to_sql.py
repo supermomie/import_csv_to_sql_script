@@ -31,8 +31,6 @@ cursorInsatnce.execute(sqlStatement)
 print("IMPORT DATABASE")
 data = pd.read_csv(PATHFILE+'/'+NAME, encoding=ENCODING, sep=';')
 columnsName = [col for col in data.columns]
-print(columnsName)
-print(len(columnsName))
 ratings = pd.read_csv(PATHFILE+'/'+NAME, sep=';', encoding=ENCODING, usecols=columnsName)
 
 
