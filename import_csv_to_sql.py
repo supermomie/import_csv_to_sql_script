@@ -18,6 +18,7 @@ PATHFILE   = ''
 # Nom du fichier
 NAME       = ''
 
+ENCODING = ''
 
 engine = sqlalchemy.create_engine('mysql+pymysql://'+databaseUserName+':@'+databaseServerIP+'/'+DB_NAME)
 
@@ -28,9 +29,12 @@ sqlStatement = "CREATE DATABASE "+DB_NAME
 cursorInsatnce.execute(sqlStatement)
 
 print("IMPORT DATABASE")
-data = pd.read_csv(PATHFILE+'/'+NAME)
+data = pd.read_csv(PATHFILE+'/'+NAME, encoding=ENCODING, sep=';')
 columnsName = [col for col in data.columns]
-ratings = pd.read_csv(PATHFILE+'/'+NAME, sep=',', encoding='latin-1',usecols=columnsName)
+print(columnsName)
+print(len(columnsName))
+ratings = pd.read_csv(PATHFILE+'/'+NAME, sep=';', encoding=ENCODING, usecols=columnsName)
+
 
 ratings.to_sql(TABLE_NAME, con=engine, if_exists='append', index=False, chunksize=1)
 
