@@ -4,6 +4,6 @@
 ### Install requirement
 
 ```
-pip install pymysql
+pip install -r requirements.txt
 
 ```
