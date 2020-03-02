@@ -10,8 +10,8 @@ databaseUserName      = "root"
 databaseUserPassword  = ""
 
 # Nom de la base de donnee et nom de la table
-DB_NAME    = 'Declarations'
-TABLE_NAME = 'declaration_avantage'
+DB_NAME    = ''
+TABLE_NAME = ''
 
 # Chemin du ficher CSV
 PATHFILE   = ''
