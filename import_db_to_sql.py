@@ -84,6 +84,5 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword, tableN
 
 
 all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, TABLE_NAME, DB_NAME, PATHFILE, NAME, ENCODING, SEP)
-read_JSON(PATHFILE, NAME)
 end = time.time()
 print("time {} s".format(end-start))
