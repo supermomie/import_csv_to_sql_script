@@ -15,14 +15,14 @@ DATABASEUSERNAME      = "root"
 DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
-DB_NAME    = 'GOT'
-TABLE_NAME = 'S2'
+DB_NAME    = ''
+TABLE_NAME = ''
 
 # Chemin du ficher CSV
-PATHFILE   = '/home/fakhredine/Documents/microsoft/DB/JSON/game-of-thrones-srt' # TODO put in ARGV PLZ!!
+PATHFILE   = '' # TODO put in ARGV PLZ!!
 
 # Nom du fichier
-NAME       = 'season2.json' # TODO put in ARGV PLZ!!
+NAME       = '' # TODO put in ARGV PLZ!!
 
 ENCODING = 'utf-8'
 SEP      = ','
@@ -52,8 +52,8 @@ def read_CSV(pathfile, name, encoding, sep):
     return ratings
 
 def read_JSON(pathfile, name):
+    # Lecture du ficher json
     data = pd.read_json(pathfile + '/' + name)
-    #data = data['Game Of Thrones S01E01 Winter Is Coming.srt']
     return data
 
 
@@ -61,7 +61,7 @@ def error_MSG():
     return colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
 
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, dbName, pathfile, name, encoding, sep):
-    if len(argv) >= 1:
+    if len(argv) <= 1:
         print(error_MSG())
         exit()
     
