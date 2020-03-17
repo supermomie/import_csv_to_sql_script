@@ -60,7 +60,7 @@ def read_JSON(pathfile, name):
 def error_MSG():
     return colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
 
-def all_process(databaseUserName, databaseServerIP, databaseUserPassword, dbName, pathfile, name, encoding, sep):
+def all_process(databaseUserName, databaseServerIP, databaseUserPassword, tableName, dbName, pathfile, name, encoding, sep):
     if len(argv) <= 1:
         print(error_MSG())
         exit()
@@ -71,20 +71,19 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword, dbName
         engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         ratings = read_CSV(pathfile, name, encoding, sep)
-        # Execution de tralala
-        ratings.to_sql(TABLE_NAME, con=engine, if_exists='append', index=False, chunksize=1)
+        ratings.to_sql(tableName, con=engine, if_exists='append', index=False, chunksize=1)
     
     if argv[1] == "json":
     
         engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
-        cursorInsatnce = create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
+        create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         data = read_JSON(pathfile, name)
-        data.to_sql(TABLE_NAME, con=engine, if_exists='append', index=True, chunksize=1)
+        data.to_sql(tableName, con=engine, if_exists='append', index=True, chunksize=1)
     
     print("IMPORT TERMINER")
 
 
-all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, DB_NAME, PATHFILE, NAME, ENCODING, SEP)
+all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, TABLE_NAME, DB_NAME, PATHFILE, NAME, ENCODING, SEP)
 read_JSON(PATHFILE, NAME)
 end = time.time()
-print("time {}".format(end-start))
+print("time {} s".format(end-start))
