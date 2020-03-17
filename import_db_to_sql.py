@@ -4,7 +4,7 @@ import pandas as pd
 import sqlalchemy
 import pymysql
 from sys import argv
-
+from termcolor import colored
 
 start = time.time()
 
@@ -15,14 +15,14 @@ DATABASEUSERNAME      = "root"
 DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
-DB_NAME    = ''
-TABLE_NAME = ''
+DB_NAME    = 'GOT'
+TABLE_NAME = 'S2'
 
 # Chemin du ficher CSV
-PATHFILE   = '' # TODO put in ARGV PLZ!!
+PATHFILE   = '/home/fakhredine/Documents/microsoft/DB/JSON/game-of-thrones-srt' # TODO put in ARGV PLZ!!
 
 # Nom du fichier
-NAME       = '' # TODO put in ARGV PLZ!!
+NAME       = 'season2.json' # TODO put in ARGV PLZ!!
 
 ENCODING = 'utf-8'
 SEP      = ','
@@ -37,8 +37,11 @@ def create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName):
     # Instructions SQL
     _, connectionInstance = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
     cursorInsatnce = connectionInstance.cursor()
-    sqlStatement = "CREATE DATABASE "+ dbName
-    cursorInsatnce.execute(sqlStatement)
+    try :
+        sqlStatement = "CREATE DATABASE "+ dbName
+        cursorInsatnce.execute(sqlStatement)
+    except :
+        return cursorInsatnce
     return cursorInsatnce
 
 def read_CSV(pathfile, name, encoding, sep):
@@ -50,12 +53,19 @@ def read_CSV(pathfile, name, encoding, sep):
 
 def read_JSON(pathfile, name):
     data = pd.read_json(pathfile + '/' + name)
-    data = data['Game Of Thrones S01E01 Winter Is Coming.srt']
+    #data = data['Game Of Thrones S01E01 Winter Is Coming.srt']
     return data
 
+
+def error_MSG():
+    return colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
+
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, dbName, pathfile, name, encoding, sep):
-    print("IMPORT DATABASE")
+    if len(argv) >= 1:
+        print(error_MSG())
+        exit()
     
+    print("IMPORT DATABASE")
     if argv[1] == "csv":
     
         engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
@@ -69,8 +79,7 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword, dbName
         engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         cursorInsatnce = create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         data = read_JSON(pathfile, name)
-        #cursorInsatnce.execute("INSERT INTO json_col VALUES (" + str(data) + ")")
-        data.to_sql(TABLE_NAME, con=engine, if_exists='append', index=False, chunksize=1)
+        data.to_sql(TABLE_NAME, con=engine, if_exists='append', index=True, chunksize=1)
     
     print("IMPORT TERMINER")
 
