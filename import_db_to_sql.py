@@ -1,3 +1,4 @@
+import os
 import time
 import json
 import pandas as pd
@@ -8,21 +9,20 @@ from termcolor import colored
 
 start = time.time()
 
-
 # Configuration serveur
 DATABASESERVERIP      = "localhost" #OR 127.0.0.1
 DATABASEUSERNAME      = "root"
 DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
-DB_NAME    = ''
-TABLE_NAME = ''
+DB_NAME    = 'GOT'
+TABLE_NAME = 'S2'
 
 # Chemin du ficher CSV
-PATHFILE   = '' # TODO put in ARGV PLZ!!
+PATHFILE   = "C:/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt"#'/c/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt' # TODO put in ARGV PLZ!!
 
 # Nom du fichier
-NAME       = '' # TODO put in ARGV PLZ!!
+NAME       = 'season2.json' # TODO put in ARGV PLZ!!
 
 ENCODING = 'utf-8'
 SEP      = ','
@@ -56,9 +56,12 @@ def read_JSON(pathfile, name):
     data = pd.read_json(pathfile + '/' + name)
     return data
 
-
+# TODO ATTACK THAT , chek os and print result with color !
 def error_MSG():
-    return colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
+    #msgLinux = colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
+    msgWin = "ERR... ARG MISSING"
+    #msg = os.system(msgLinux if os.name == 'nt' else msgWin)
+    return msgWin
 
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, tableName, dbName, pathfile, name, encoding, sep):
     if len(argv) <= 1:
