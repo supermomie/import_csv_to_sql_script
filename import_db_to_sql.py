@@ -1,4 +1,4 @@
-import os
+import os, re
 import time
 import json
 import pandas as pd
@@ -7,7 +7,9 @@ import pymysql
 from sys import argv
 from termcolor import colored
 
+
 start = time.time()
+
 
 # Configuration serveur
 DATABASESERVERIP      = "localhost" #OR 127.0.0.1
@@ -19,23 +21,43 @@ DB_NAME    = 'GOT'
 TABLE_NAME = 'S3'
 
 # Chemin du ficher CSV
-PATHFILE   = "C:/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt"#'/c/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt' # TODO put in ARGV PLZ!!
+PATHFILE   = argv[1]
 
 # Nom du fichier
-NAME       = 'season3.json' # TODO put in ARGV PLZ!!
+NAME       = re.search("([^\\\]+$)", PATHFILE)[0]
+EXTENTION  = re.search('([^.]+$)', PATHFILE)[0]
+
+print(PATHFILE)
+print(NAME)
+print(EXTENTION)
 
 ENCODING = 'utf-8'
 SEP      = ','
 
+
+def checkOs():
+    _os = os.system("win" if os.name == 'nt' else "linux")
+    return _os
+
+
+print(checkOs())
+exit()
+
+
 def connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName):
     # Connection a mysql
     engine = sqlalchemy.create_engine('mysql+pymysql://'+databaseUserName+':@'+databaseServerIP+'/'+ dbName)
-    connectionInstance = pymysql.connect(host=databaseServerIP, user=databaseUserName, password=databaseUserPassword,charset="utf8mb4", cursorclass=pymysql.cursors.DictCursor)
+    connectionInstance = pymysql.connect(host=databaseServerIP, 
+                                        user=databaseUserName, 
+                                        password=databaseUserPassword,
+                                        charset="utf8mb4", 
+                                        cursorclass=pymysql.cursors.DictCursor)
     return engine, connectionInstance
 
 def create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName):
     # Instructions SQL
-    _, connectionInstance = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
+    _, connectionInstance = connection(databaseUserName, databaseServerIP, 
+                                            databaseUserPassword, dbName)
     cursorInsatnce = connectionInstance.cursor()
     try :
         sqlStatement = "CREATE DATABASE "+ dbName
@@ -44,11 +66,13 @@ def create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName):
         return cursorInsatnce
     return cursorInsatnce
 
+
 def read_CSV(pathfile, name, encoding, sep):
     # Lecture du fichier csv
     data = pd.read_csv(pathfile +'/'+ name, encoding=encoding, sep=sep, dtype='object')
-    columnsName = [col for col in data.columns]
-    ratings = pd.read_csv(pathfile +'/'+ name, encoding=encoding, usecols=columnsName, sep=sep, dtype='object')
+    columnsName = [col for col in data.columns] # OR columnsName = data.columns
+    ratings = pd.read_csv(pathfile +'/'+ name, encoding=encoding, 
+                            usecols=columnsName, sep=sep, dtype='object')
     return ratings
 
 def read_JSON(pathfile, name):
@@ -58,34 +82,32 @@ def read_JSON(pathfile, name):
 
 # TODO ATTACK THAT , chek os and print result with color !
 def error_MSG():
-    msgLinux = colored("ERR... ARG MISSING", "red")
-    msgWin = "ERR... ARG MISSING"
+    msgLinux = colored("ERR ARG MISSING", "red")
+    msgWin = "ERR ARG MISSING"
     msg = os.system(msgWin if os.name == 'nt' else msgLinux)
     return msg
 
-def all_process(databaseUserName, databaseServerIP, databaseUserPassword, tableName, dbName, pathfile, name, encoding, sep):
+def all_process(databaseUserName, databaseServerIP, databaseUserPassword, 
+                            tableName, dbName, pathfile, name, encoding, sep):
     if len(argv) <= 1:
         print(error_MSG())
         exit()
     
     print("IMPORT DATABASE")
+    engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
+    create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
     if argv[1] == "csv":
-    
-        engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
-        create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         ratings = read_CSV(pathfile, name, encoding, sep)
         ratings.to_sql(tableName, con=engine, if_exists='append', index=False, chunksize=1)
     
     if argv[1] == "json":
-    
-        engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
-        create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
         data = read_JSON(pathfile, name)
         data.to_sql(tableName, con=engine, if_exists='append', index=True, chunksize=1)
     
     print("IMPORT TERMINER")
 
 
-all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, TABLE_NAME, DB_NAME, PATHFILE, NAME, ENCODING, SEP)
+all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
+                TABLE_NAME, DB_NAME, PATHFILE, NAME, ENCODING, SEP)
 end = time.time()
-print("time {} s".format(end-start))
+print("time {}s".format(end-start))
