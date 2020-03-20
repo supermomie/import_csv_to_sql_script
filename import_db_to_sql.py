@@ -16,13 +16,13 @@ DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
 DB_NAME    = 'GOT'
-TABLE_NAME = 'S2'
+TABLE_NAME = 'S3'
 
 # Chemin du ficher CSV
 PATHFILE   = "C:/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt"#'/c/Users/Fakhredine atallah/Documents/microsoft/DB/JSON/game-of-thrones-srt' # TODO put in ARGV PLZ!!
 
 # Nom du fichier
-NAME       = 'season2.json' # TODO put in ARGV PLZ!!
+NAME       = 'season3.json' # TODO put in ARGV PLZ!!
 
 ENCODING = 'utf-8'
 SEP      = ','
@@ -58,10 +58,10 @@ def read_JSON(pathfile, name):
 
 # TODO ATTACK THAT , chek os and print result with color !
 def error_MSG():
-    #msgLinux = colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
+    msgLinux = colored("ERR... ARG MISSING", "red")
     msgWin = "ERR... ARG MISSING"
-    #msg = os.system(msgLinux if os.name == 'nt' else msgWin)
-    return msgWin
+    msg = os.system(msgWin if os.name == 'nt' else msgLinux)
+    return msg
 
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, tableName, dbName, pathfile, name, encoding, sep):
     if len(argv) <= 1:
