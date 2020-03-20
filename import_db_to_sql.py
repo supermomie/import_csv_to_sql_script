@@ -36,7 +36,7 @@ SEP      = ','
 def check_Os(win, linux):
     return os.system(win if os.name == 'nt' else linux)
 
-NAME = checkOs(win, linux)
+NAME = check_Os(win, linux)
 
 
 
