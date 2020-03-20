@@ -19,16 +19,19 @@ DATABASEUSERPASSWORD  = ""
 # Nom de la base de donnee et nom de la table
 
 DB_NAME    = 'GOT'
-TABLE_NAME = 'S3'
+
 
 # Chemin du ficher CSV
 PATHFILE   = argv[1]
 
+# Nom de la colone
+TABLE_NAME = 'S3'
+
 # Nom du fichier
 win = re.search("([^\\\]+$)", PATHFILE)[0]
-linux = re.search("([^\/]+$)", PATHFILE)[0] 
+linux = re.search("([^\/]+$)", PATHFILE)[0]
 
-EXTENTION  = re.search('([^.]+$)', PATHFILE)[0]
+EXTENSION  = re.search('([^.]+$)', PATHFILE)[0]
 
 ENCODING = 'utf-8'
 SEP      = ','
@@ -75,7 +78,9 @@ def read_CSV(pathfile, name, encoding, sep):
 
 def read_JSON(pathfile, name):
     # Lecture du ficher json
-    data = pd.read_json(pathfile + '/' + name)
+    print(pathfile)
+    print(name)
+    data = pd.read_json(pathfile)
     return data
 
 
@@ -95,18 +100,16 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword,
     print("IMPORT DATABASE")
     engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
     create_DB(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
-    if argv[1] == "csv":
+    
+    if EXTENSION == "csv":
         ratings = read_CSV(pathfile, name, encoding, sep)
         ratings.to_sql(tableName, con=engine, if_exists='append', index=False, chunksize=1)
     
-    if argv[1] == "json":
+    if EXTENSION == "json":
         data = read_JSON(pathfile, name)
         data.to_sql(tableName, con=engine, if_exists='append', index=True, chunksize=1)
     
     print("IMPORT TERMINER")
-
-
-
 
 
 
