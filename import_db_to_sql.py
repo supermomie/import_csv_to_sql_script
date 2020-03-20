@@ -67,6 +67,7 @@ def read_JSON(pathfile, name):
 def error_MSG():
     return colored("ERR... ARG MISSING", "red", attrs=["bold", "reverse"])
 
+
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, 
                             tableName, dbName, pathfile, name, encoding, sep):
     if len(argv) <= 1:
