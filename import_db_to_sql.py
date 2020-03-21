@@ -7,10 +7,11 @@ import pymysql
 from sys import argv
 from termcolor import colored
 
+from pathlib import Path
 
 start = time.time()
 
-
+#TODO CONVERT ALL REGEX BY PATHLIB
 # Configuration serveur
 DATABASESERVERIP      = "localhost" #OR 127.0.0.1
 DATABASEUSERNAME      = "root"
@@ -18,14 +19,18 @@ DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
 
-DB_NAME    = 'GOT'
+DB_NAME    = argv[2]
 
 
 # Chemin du ficher CSV
 PATHFILE   = argv[1]
 
 # Nom de la colone
-TABLE_NAME = 'S3'
+TABLE_NAME = Path(PATHFILE).stem
+#TABLE_NAME = re.search("([^/][^/]+\.)", PATHFILE)[0]
+print(TABLE_NAME)
+exit()
+
 
 # Nom du fichier
 win = re.search("([^\\\]+$)", PATHFILE)[0]
@@ -40,7 +45,6 @@ def check_Os(win, linux):
     return os.system(win if os.name == 'nt' else linux)
 
 NAME = check_Os(win, linux)
-
 
 
 def connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName):
