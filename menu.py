@@ -2,19 +2,26 @@ import os
 from sys import argv
 from termcolor import colored
 
+
+
+mandatoryArg = colored("?", "green", attrs=["bold"])
+
 def men():
     arguments = {
         'n:': 'nom',
         'c:': 'chemin',
     }
-    print("a")
     if len(argv) == 1 or len(argv) <= 1:
         print(colored("                            Mode d'emploi :                                \n\n", "red", attrs=['bold', 'reverse'])
-        + colored(os.getcwd()+" nom", "red", attrs=["bold"]) , colored("\"regex\" [-d=\"directory\"]  [-f=\"files\"]? [-a]? \n\n", "yellow")
-        + " [\e[1;31m-c\e[0m=\e[0;33mchemin\e[0m]"
-        + "\e[0;32mArguments : \n\n"
-        + "  \e[0;36m-n / --nom : \e[0;37mNom de la base de donnee\e[0m(\e[1;34mstring\e[0m)\n"
-        + "  \e[0;36m-c / --chemin : \e[0;37mChemin absolu a la racine de la base de donnee\e[0m(\e[1;34mstring\e[0m)\n")
+        + colored(os.getcwd(), "red", attrs=["bold"])+ " [" + colored("-d", "red") + "=" + colored("\"directory\"", "yellow") +"] [" + colored("-tn", "red") + "=" + colored("\"table name\"", "yellow" ) + "] [" + colored("-cn", "red") + "=" + colored("\"column name\"", "yellow" ) + "]"  + " [" + colored("-a", "red") + "]"+ mandatoryArg +"\n\n"
+        
+        
+        + colored("Arguments : \n\n", "green")
+        + colored("  -d  / --dir", "cyan") + "         : Absolute path of file/folder " + colored("(string) \n", "blue")
+        + colored("  -tn / --table_name", "cyan") + "  : Database Name " + colored("(string) \n", "blue")
+        + colored("  -cn / --column_name", "cyan") + " : Column name " + colored("(string) \n", "blue")
+        + colored("  -a  / --all", "cyan") + "         : All compatible files in folder " + colored("(string) \n", "blue")
+        )
         exit()
     error = []
     
