@@ -26,7 +26,7 @@ class menu():
             exit()
         error = []
         cmdarg = CmdArg(arguments, argv)
-        args = cmdarg.check(error);
+        args = cmdarg.check(error)
         print("args", args)
         print("error ", error)
         if args is not None:
