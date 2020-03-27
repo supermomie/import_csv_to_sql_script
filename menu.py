@@ -7,10 +7,9 @@ from cmdarg import CmdArg
 class menu():
     
     def __init__(self, arg):
-        return arg == self.men(arg)
+        arg == self.men(arg)
 
     def men(self, arg):
-        arguments = arg
         if len(argv) == 1 or len(argv) <= 1:
             mandatoryArg = colored("?", "green", attrs=["bold"])
             print(colored("                            Mode d'emploi :                                \n\n", "red", attrs=['bold', 'reverse'])
@@ -25,11 +24,12 @@ class menu():
             )
             exit()
         error = []
-        cmdarg = CmdArg(arguments, argv)
+        cmdarg = CmdArg(argv, arg)
         args = cmdarg.check(error)
         print("args", args)
         print("error ", error)
-        if args is not None:
+        if args is not None and len(args) != 0:
+            print("cc")
             if args[0] == -2:
                 print(colored("The argument " +args[1]+" is incorect", "red"))
                 exit()
@@ -37,7 +37,6 @@ class menu():
                 return -3
             return args
 
-
-arg = ['d', 'tn', 'cn', 'a']
+arg = ["d", 't', 'c', 'a']
 m = menu(arg)
-ar = m.men()
+ar = m.men(arg)
