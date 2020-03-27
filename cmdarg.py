@@ -10,9 +10,9 @@ class CmdArg():
     global cmdArg
 
     def __init__(self, usrArg, cmdArg):
-        self.usrArg = usrArg
-        cmdArg = cmdArg[1:]
+        self.usrArg = usrArg[1:]
         self.cmdArg = cmdArg
+
 
     def check(self, error):
         ret = self.printUserError()
@@ -20,34 +20,35 @@ class CmdArg():
             return ret
         values = []
         ret = self.getValues(error, values)
-        #print("ret : ",ret)
         self.setBools(values)
         return values if ret == True else ret
 
     def setBools(self, values):
         for short in self.usrArg:
-            #print(short)
+            print(short)
             found = False
             if len(short) == 1:
                 for (arg, val) in values:
-                    if re.search("([#^$short$#])", arg):
+                    if re.search("^"+short+"$", arg):
                         found = True
                         break
-                if found is None:
+                if found == False:
                     values[short] = False
 
-    def getValues(self, error = [], values = []):
-        for arg in self.cmdArg:
+    def getValues(self, error, values):
+        for arg in self.usrArg:
             print("arg : ",arg)
-            _el = [usrShort for usrShort in self.usrArg]
+            _el = [usrShort for usrShort in self.cmdArg]
             try:
                 if re.search("^.", arg)[0] in _el:
-                    print("OK")
+                    print(colored("OK", "green"))
                 else:
+                    print(colored("KO", "red"))
                     error = arg
                     return -2, error
             except:
                 return error
+        return error
         """for arg in self.cmdArg:
             print(arg)
             arg_found = False
