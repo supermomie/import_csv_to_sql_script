@@ -4,10 +4,10 @@ import json
 import pandas as pd
 import sqlalchemy
 import pymysql
+import pymongo
 from sys import argv
 from termcolor import colored
 from pathlib import Path
-from pymongo import MongoClient
 
 
 
@@ -73,7 +73,9 @@ def read_CSV(pathfile, encoding, sep):
 
 def read_JSON(pathfile):
     # Lecture du ficher json
-    data = pd.read_json(pathfile)
+    #data = pd.read_json(pathfile)
+    with open(pathfile) as f:
+        data = json.load(f)
     return data
 
 
@@ -112,9 +114,16 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword,
 
 
 
-client = MongoClient()
-db = client.test_database
-print(db)
+myclient = pymongo.MongoClient()
+
+db = myclient[DB_NAME]
+collection = db[TABLE_NAME]
+collection.insert_one(read_JSON(PATHFILE))
+
+print(myclient.list_database_names())
+
+myclient.close()
+
 
 end = time.time()
 print("time {}s".format(end-start))
