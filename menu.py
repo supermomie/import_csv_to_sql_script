@@ -13,10 +13,16 @@ class menu():
         if len(argv) == 1 or len(argv) <= 1:
             mandatoryArg = colored("?", "green", attrs=["bold"])
             print(colored("                            Mode d'emploi :                                \n\n", "red", attrs=['bold', 'reverse'])
-            + colored(os.getcwd(), "red", attrs=["bold"])+ " [" + colored("-d", "red") + "=" + colored("\"directory\"", "yellow") +"] [" + colored("-tn", "red") + "=" + colored("\"table name\"", "yellow" ) + "] [" + colored("-cn", "red") + "=" + colored("\"column name\"", "yellow" ) + "]"  + " [" + colored("-a", "red") + "]"+ mandatoryArg +"\n\n"
-            
-            
+            + colored(os.getcwd(), "red", attrs=["bold"])+ 
+            " [" + colored("-db", "red") + "=" + colored("\"database server\"", "yellow") +"]"+ 
+            " [" + colored("-d", "red") + "=" + colored("\"directory\"", "yellow") +"]"+ 
+            " [" + colored("-tn", "red") + "=" + colored("\"table name\"", "yellow" ) + "]"+
+            " [" + colored("-cn", "red") + "=" + colored("\"column name\"", "yellow" ) + "]"+ 
+            " [" + colored("-a", "red") + "]"+ mandatoryArg +"\n\n"
+
             + colored("Arguments : \n\n", "green")
+            
+            + colored("  -db  / --database", "cyan") + "   : Choice [mysql or mongodb] " + colored("(string) \n", "blue")
             + colored("  -d  / --dir", "cyan") + "         : Absolute path of file/folder " + colored("(string) \n", "blue")
             + colored("  -tn / --table_name", "cyan") + "  : Database Name " + colored("(string) \n", "blue")
             + colored("  -cn / --column_name", "cyan") + " : Column name " + colored("(string) \n", "blue")
@@ -28,10 +34,11 @@ class menu():
         args = cmdarg.check(error)
         print("args", args)
         print("error ", error)
-        if args is not None and len(args) != 0:
+        print(error)
+        if len(error) != 0 and error:
             print("cc")
             if args[0] == -2:
-                print(colored("The argument " +args[1]+" is incorect", "red"))
+                print(colored("The argument " +error+" is incorect", "red"))
                 exit()
             elif args == -1:
                 return -3
