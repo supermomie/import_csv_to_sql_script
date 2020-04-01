@@ -24,7 +24,7 @@ class CmdArg():
 
     def setBools(self, values):
         for short in self.usrArg:
-            print(short)
+            #print(short)
             found = False
             if len(short) == 1:
                 for (arg, val) in values:
@@ -36,14 +36,13 @@ class CmdArg():
 
     def getValues(self, error, values):
         for arg in self.usrArg:
-            print("arg : ",arg)
             _el = [usrShort for usrShort in self.cmdArg]
             if re.search("^[^=]*", arg)[0] in _el:
-                print(colored("OK", "green"))
-                values.append(arg)
+                #print(colored("OK " + arg, "green"))
+                values.append(re.search("[^=]+$",arg)[0]) #TODO append a DICT
             else:
-                print(colored("KO", "red"))
-                error.append(arg)
+                #print(colored("KO " + arg, "red"))
+                error.append(re.search("^[^=]*", arg)[0])
         return values, [-2, error]
         """for arg in self.cmdArg:
             print(arg)

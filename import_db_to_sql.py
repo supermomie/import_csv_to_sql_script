@@ -8,7 +8,7 @@ import pymongo
 from sys import argv
 from termcolor import colored
 from pathlib import Path
-
+from menu import Menu
 
 
 start = time.time()
@@ -19,7 +19,13 @@ DATABASEUSERNAME      = "root"
 DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
-DB_NAME    = argv[2]
+
+validArg = ["-db", "-d", '-tn', '-cn', '-a']
+arg = Menu().men(validArg)
+
+DB_NAME    = arg
+print(DB_NAME)
+exit()
 
 # Chemin du ficher CSV
 PATHFILE   = argv[1]

@@ -4,10 +4,10 @@ from termcolor import colored
 from cmdarg import CmdArg
 
 
-class menu():
+class Menu():
     
-    def __init__(self, arg):
-        arg == self.men(arg)
+    #def __init__(self):
+        #arg == self.men(arg)
 
     def men(self, arg):
         if len(argv) == 1 or len(argv) <= 1:
@@ -32,18 +32,8 @@ class menu():
         error = []
         cmdarg = CmdArg(argv, arg)
         args = cmdarg.check(error)
-        print("args", args)
-        print("error ", error)
-        print(error)
-        if len(error) != 0 and error:
-            print("cc")
-            if args[0] == -2:
-                print(colored("The argument " +error+" is incorect", "red"))
-                exit()
-            elif args == -1:
-                return -3
-            return args
-
-arg = ["d", 't', 'c', 'a']
-m = menu(arg)
-ar = m.men(arg)
+        if len(error) > 0:
+            for e in error:
+                print(colored("The argument " +e+" is incorect", "red"))
+            exit()
+        return args
