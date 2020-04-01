@@ -13,15 +13,14 @@ class CmdArg():
         self.usrArg = usrArg[1:]
         self.cmdArg = cmdArg
 
-
     def check(self, error):
         ret = self.printUserError()
         if ret == -1:
             return ret
         values = []
         ret = self.getValues(error, values)
-        self.setBools(values)
-        return values if ret == True else ret
+        #self.setBools(values)
+        return values if len(ret) != 0 else ret
 
     def setBools(self, values):
         for short in self.usrArg:
@@ -39,16 +38,13 @@ class CmdArg():
         for arg in self.usrArg:
             print("arg : ",arg)
             _el = [usrShort for usrShort in self.cmdArg]
-            try:
-                if re.search("^.", arg)[0] in _el:
-                    print(colored("OK", "green"))
-                else:
-                    print(colored("KO", "red"))
-                    error = arg
-                    return -2, error
-            except:
-                return error
-        return error
+            if re.search("^[^=]*", arg)[0] in _el:
+                print(colored("OK", "green"))
+                values.append(arg)
+            else:
+                print(colored("KO", "red"))
+                error.append(arg)
+        return values, [-2, error]
         """for arg in self.cmdArg:
             print(arg)
             arg_found = False
@@ -71,7 +67,7 @@ class CmdArg():
             return error
         except:
             return -2"""
-    
+
     def printUserError(self):
         e = False
         for longArg in self.usrArg:
@@ -84,4 +80,3 @@ class CmdArg():
             if e:
                 return USR_ERROR
             return True
-        
