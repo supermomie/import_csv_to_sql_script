@@ -7,6 +7,9 @@ import pymysql
 from sys import argv
 from termcolor import colored
 from pathlib import Path
+from pymongo import MongoClient
+
+
 
 start = time.time()
 
@@ -103,10 +106,15 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword,
 
 
 
-all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
-                TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP)
+#all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
+#                TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP)
 
 
+
+
+client = MongoClient()
+db = client.test_database
+print(db)
 
 end = time.time()
 print("time {}s".format(end-start))
