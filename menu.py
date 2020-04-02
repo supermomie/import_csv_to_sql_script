@@ -36,4 +36,4 @@ class Menu():
             for e in error:
                 print(colored("The argument " +e+" is incorect", "red"))
             exit()
-        return args
+        return args[0]

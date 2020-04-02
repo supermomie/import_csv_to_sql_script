@@ -13,22 +13,21 @@ from menu import Menu
 
 start = time.time()
 
+
+validArg = ["-db", "-d", '-tn', '-cn', '-a']
+arg = Menu().men(validArg)
+
+
 # Configuration serveur
 DATABASESERVERIP      = "localhost" #OR 127.0.0.1
 DATABASEUSERNAME      = "root"
 DATABASEUSERPASSWORD  = ""
 
 # Nom de la base de donnee et nom de la table
-
-validArg = ["-db", "-d", '-tn', '-cn', '-a']
-arg = Menu().men(validArg)
-
-DB_NAME    = arg
-print(DB_NAME)
-exit()
+DB_NAME    = arg['-tn']
 
 # Chemin du ficher CSV
-PATHFILE   = argv[1]
+PATHFILE   = arg['-d']
 
 # Nom de la colone
 TABLE_NAME = Path(PATHFILE).stem
@@ -85,18 +84,8 @@ def read_JSON(pathfile):
     return data
 
 
-def error_MSG():
-    msgLinux = colored("ERR ARG MISSING", "red")
-    msgWin = "ERR ARG MISSING"
-    msg = os.system(msgWin if os.name == 'nt' else msgLinux)
-    return msg
-
-
 def all_process(databaseUserName, databaseServerIP, databaseUserPassword, 
                             tableName, dbName, pathfile, encoding, sep):
-    if len(argv) <= 1:
-        print(error_MSG())
-        exit()
     
     print("IMPORT DATABASE")
     engine, _ = connection(databaseUserName, databaseServerIP, databaseUserPassword, dbName)
@@ -114,8 +103,12 @@ def all_process(databaseUserName, databaseServerIP, databaseUserPassword,
 
 
 
-#all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
-#                TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP)
+
+
+
+
+all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
+                TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP)
 
 
 
