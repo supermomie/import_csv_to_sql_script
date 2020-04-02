@@ -9,7 +9,7 @@ from sys import argv
 from termcolor import colored
 from pathlib import Path
 from menu import Menu
-
+from tqdm import tqdm
 
 start = time.time()
 

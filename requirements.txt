@@ -3,3 +3,4 @@ sqlalchemy
 pymysql
 pymongo
 termcolor
+tqdm
