@@ -42,13 +42,23 @@ ENCODING = 'utf-8'
 SEP      = ','
 
 
-#TODO create class for reading files in folder and solo file
+#TODO create class for reading files in folder and solo FILE_NAME
+
+
+class readbases():
+    
+    def __init__():
+        print("a")
+
+    def read_CSV():
+        print("c") 
+
 
 class sql():
     
     def __init__(self, DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
                     TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP):
-        return self.all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
+        self.all_process(DATABASEUSERNAME, DATABASESERVERIP, DATABASEUSERPASSWORD, 
                     TABLE_NAME, DB_NAME, PATHFILE, ENCODING, SEP)
 
 
@@ -115,7 +125,7 @@ class sql():
 class mongo():
 
     def __init__(self, pathfile, dbName, tableName):
-        return self.all_process(pathfile, dbName, tableName)
+        self.all_process(pathfile, dbName, tableName)
 
 
     def connections(self):
@@ -126,8 +136,12 @@ class mongo():
         myclient = self.connections()
         db = myclient[dbName]
         collection = db[tableName]
-        return collection
-
+        #print(collection)
+        #print(collection.count())
+        if collection.count() == 0:
+            return collection
+        elif collection.count() > 0:
+            collection.drop()
     
     def insert(self, pathfile, dbName, tableName):
         collection = self.create_DB(dbName, tableName)
@@ -135,9 +149,11 @@ class mongo():
     
     def read_JSON(self, pathfile):
        # Lecture du ficher json
-       #data = pd.read_json(pathfile)
        with open(pathfile) as f:
            data = json.load(f)
+           #for item in data:
+           #     print(Path(item).stem)
+       #exit()
        return data
 
 
