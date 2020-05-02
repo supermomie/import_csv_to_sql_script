@@ -4,3 +4,4 @@ pymysql
 pymongo
 termcolor
 tqdm
+chardet
